@@ -4,9 +4,8 @@
 
 `cgol` is a modern C++ implementation of Conway's Game of Life.
 
-* Runs in the terminal
+* Runs in the terminal - use the terminal width/height as the grid size
 * Reads from run-length encoding (`.rle`) pattern files (See `samples/`)
-* Uses the terminal width/height as the grid size
 * MIT License
 
 ## Quick Start
