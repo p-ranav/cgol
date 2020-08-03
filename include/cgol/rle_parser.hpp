@@ -2,9 +2,11 @@
 #include <algorithm>
 #include <cctype>
 #include <cstring>
+#include <fstream>
 #include <iostream>
 #include <locale>
 #include <sstream>
+#include <streambuf>
 #include <string>
 #include <vector>
 
@@ -21,6 +23,15 @@ class rle_parser {
   std::vector<size_t> rule_survival_;
   std::string pattern_raw_;
   std::vector<std::vector<char>> pattern_2d_array;
+
+  static std::string read_file(const std::string &filename) {
+    std::ifstream stream(filename);
+    if (stream.fail()) {
+      throw std::runtime_error("Error: Could not open file " + filename);
+    }
+    return std::string((std::istreambuf_iterator<char>(stream)),
+                       std::istreambuf_iterator<char>());
+  }
 
   static std::vector<std::string> split_string(const std::string &str,
                                                const std::string &delimiter) {
@@ -140,10 +151,12 @@ class rle_parser {
           // Grid sizes
           if (starts_with(d, "x")) {
             auto kvpair = split_string(d, "=");
-            size_x_ = std::stoi(kvpair[1]);
+            if (size_x_ == 0)
+              size_x_ = std::stoi(kvpair[1]);
           } else if (starts_with(d, "y")) {
             auto kvpair = split_string(d, "=");
-            size_y_ = std::stoi(kvpair[1]);
+            if (size_y_ == 0)
+              size_y_ = std::stoi(kvpair[1]);
           }
           // Rules
           else if (starts_with(d, "rule")) {
@@ -167,15 +180,14 @@ class rle_parser {
           }
         }
       }
-      // Pattern line 
+      // Pattern line
       else {
         pattern_raw_ += strip_right(line, " \n\r\t");
       }
     }
   }
- 
+
   void populate_pattern() {
-    std::cout << size_x_ << " x " << size_y_ << "\n";
     auto pattern_rows = split_string(strip_right(pattern_raw_, "!"), "$");
     for (size_t y = 0; y < pattern_rows.size(); y++) {
       pattern_2d_array.push_back({});
@@ -212,9 +224,17 @@ class rle_parser {
   }
 
 public:
-  rle_parser(const std::string &rle_string) : rle_string_(rle_string) {
+  rle_parser() {}
+
+  void open(const std::string &rle_string, size_t rows = 0, size_t cols = 0) {
+    rle_string_ = read_file(rle_string);
+    size_y_ = rows;
+    size_x_ = cols;
     populate_attributes();
     populate_pattern();
+  }
+
+  void print() const {
     for (auto line : pattern_2d_array) {
       for (auto c : line) {
         std::cout << c;
@@ -222,6 +242,12 @@ public:
       std::cout << "\n";
     }
   }
+
+  size_t rows() const { return size_y_; }
+
+  size_t cols() const { return size_x_; }
+
+  std::vector<std::vector<char>> pattern() const { return pattern_2d_array; }
 };
 
 } // namespace cgol

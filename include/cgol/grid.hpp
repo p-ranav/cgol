@@ -1,26 +1,67 @@
 #pragma once
-#include <array>
+#include <cgol/rle_parser.hpp>
 #include <cgol/termcolor.hpp>
 #include <random>
 #include <string>
+#include <vector>
 
 namespace cgol {
 
-template <size_t R, size_t C> class grid {
-  std::array<std::array<unsigned char, C>, R> grid_{{0}};
+class grid {
+  std::vector<std::vector<unsigned char>> grid_;
+  size_t rows_;
+  size_t cols_;
+  rle_parser parser_;
 
 public:
-  constexpr static size_t columns = C;
-  constexpr static size_t rows = R;
+  explicit grid(const std::string & rle_filename) : rows_{0}, cols_{0}, parser_{} {
+    parser_.open(rle_filename);
+    rows_ = parser_.rows();
+    cols_ = parser_.cols();
 
-  std::array<unsigned char, columns> &operator[](size_t row_index) {
+    const auto pattern = parser_.pattern();
+
+    for (size_t i = 0; i < rows_; i++) {
+      grid_.push_back({});
+      for (size_t j = 0; j < cols_; j++) {
+        if (pattern[i][j] == 'o') {
+          grid_[i].push_back(1);
+        } else if (pattern[i][j] == 'b') {
+          grid_[i].push_back(0);
+        }
+      }
+    }
+  }
+
+  explicit grid(const std::string & rle_filename, size_t rows, size_t cols) : rows_{rows}, cols_{cols}, parser_{} {
+    parser_.open(rle_filename, rows_, cols_);
+
+    const auto pattern = parser_.pattern();
+
+    for (size_t i = 0; i < rows_; i++) {
+      grid_.push_back({});
+      for (size_t j = 0; j < cols_; j++) {
+        if (pattern[i][j] == 'o') {
+          grid_[i].push_back(1);
+        } else if (pattern[i][j] == 'b') {
+          grid_[i].push_back(0);
+        }
+      }
+    }
+  }
+
+  size_t rows() const { return rows_; }
+
+  size_t cols() const { return cols_; }
+
+  std::vector<unsigned char> &operator[](size_t row_index) {
     return grid_[row_index];
   }
 
   void print() const {
     std::cout << termcolor::bold << termcolor::white;
-    for (size_t i = 0; i < rows; i++) {
-      for (size_t j = 0; j < columns; j++) {
+    for (size_t i = 0; i < rows_; i++) {
+      for (size_t j = 0; j < cols_; j++) {
         const auto cell = grid_[i][j];
         if (cell == 1) {
           std::cout << "⬜"; // ██";
@@ -34,17 +75,18 @@ public:
   }
 
   void tick_with_wrap_around() {
-    std::array<std::array<unsigned char, C>, R> result{{0}};
-    for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < columns; j++) {
+    auto result = grid_;
+
+    for (int i = 0; i < rows_; i++) {
+      for (int j = 0; j < cols_; j++) {
         result[i][j] = grid_[i][j];
         const auto neighbours =
-            (grid_[i][(j - 1) % columns] + grid_[i][(j + 1) % columns] +
-             grid_[(i - 1) % rows][j] + grid_[(i + 1) % rows][j] +
-             grid_[(i - 1) % rows][(j - 1) % columns] +
-             grid_[(i - 1) % rows][(j + 1) % columns] +
-             grid_[(i + 1) % rows][(j - 1) % columns] +
-             grid_[(i + 1) % rows][(j + 1) % columns]);
+            (grid_[i][(j - 1) % cols_] + grid_[i][(j + 1) % cols_] +
+             grid_[(i - 1) % rows_][j] + grid_[(i + 1) % rows_][j] +
+             grid_[(i - 1) % rows_][(j - 1) % cols_] +
+             grid_[(i - 1) % rows_][(j + 1) % cols_] +
+             grid_[(i + 1) % rows_][(j - 1) % cols_] +
+             grid_[(i + 1) % rows_][(j + 1) % cols_]);
         if (grid_[i][j] == 1) {
           // Cell is alive
           if (neighbours < 2 or neighbours > 3) {
@@ -70,10 +112,10 @@ public:
   }
 
   void tick() {
-    std::array<std::array<unsigned char, C>, R> result{{0}};
-    for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < columns; j++) {
-        result[i][j] = grid_[i][j];
+    auto result = grid_;
+
+    for (int i = 0; i < rows_; i++) {
+      for (int j = 0; j < cols_; j++) {
         size_t neighbours = 0;
 
         if (j - 1 >= 0) {
@@ -81,28 +123,29 @@ public:
             if (i - 1 >= 0) {
                 neighbours += grid_[i - 1][j - 1];
             }
-            if (i + 1 < rows) {
+            if (i + 1 < rows_) {
                 neighbours += grid_[i + 1][j - 1];
             }
         }
 
-        if (j + 1 < columns) {
+        if (j + 1 < cols_) {
             neighbours += grid_[i][j + 1];
-            if (i - 1 >= 0) {
+            if ((i - 1) >= 0) {
                 neighbours += grid_[i - 1][j + 1];
             }
-            if (i + 1 < rows) {
+            if ((i + 1) < rows_) {
                 neighbours += grid_[i + 1][j + 1];
             }
         }
 
-        if (i - i >= 0) {
+        if (i - 1 >= 0) {
             neighbours += grid_[i - 1][j];
         }
-        if (i + 1 < rows) {
+
+        if (i + 1 < rows_) {
             neighbours += grid_[i + 1][j];
         }
-
+        
         if (grid_[i][j] == 1) {
           // Cell is alive
           if (neighbours < 2 or neighbours > 3) {

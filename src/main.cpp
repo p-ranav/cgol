@@ -4,9 +4,6 @@
 #include <cgol/rle_parser.hpp>
 #include <chrono>
 #include <random>
-#include <string>
-#include <fstream>
-#include <streambuf>
 #include <thread>
 using namespace cgol;
 
@@ -14,21 +11,12 @@ std::random_device rd;  // obtain a random number from hardware
 std::mt19937 gen(rd()); // seed the generator
 std::uniform_int_distribution<> distr(0, 1); // define the range
 
-template <size_t R, size_t C> void fill_grid_random(cgol::grid<R, C> &grid) {
-  for (size_t i = 0; i < R; i++) {
-    for (size_t j = 0; j < C; j++) {
+void fill_grid_random(cgol::grid &grid) {
+  for (size_t i = 0; i < grid.rows(); i++) {
+    for (size_t j = 0; j < grid.cols(); j++) {
       grid[i][j] = distr(gen) > 0 ? 1 : 0;
     }
   }
-}
-
-std::string read_file(const std::string & filename) {
-  std::ifstream stream(filename);
-  if (stream.fail()) {
-    throw std::runtime_error("Error: Could not open file " + filename);
-  }
-  return std::string((std::istreambuf_iterator<char>(stream)),
-                 std::istreambuf_iterator<char>());
 }
 
 int main(int argc, char * argv[]) {
@@ -38,9 +26,6 @@ int main(int argc, char * argv[]) {
       std::cout << "Usage: ./main <pattern>.rle\n";
       return EXIT_FAILURE;
     }
-
-    const auto rle_string = read_file(argv[1]);
-    cgol::rle_parser parser(rle_string);
 
   //   // Stable
   //   {
@@ -122,18 +107,17 @@ int main(int argc, char * argv[]) {
   //       }
   //   }
 
-//   // Random Grid
-//   {
-//     cgol::grid<50, 100> grid;
-//     fill_grid_random(grid);
+  // Random Grid
+  {
+    cgol::grid grid(argv[1], std::stoi(argv[2]), std::stoi(argv[3]));
 
-//     while (true) {
-//       grid.print();
-//       std::this_thread::sleep_for(std::chrono::milliseconds(10));
-//       move_up(grid.rows);
-//       grid.tick();
-//     }
-//   }
+    while (true) {
+      grid.print();
+      std::this_thread::sleep_for(std::chrono::milliseconds(50));
+      move_up(grid.rows());
+      grid.tick();
+    }
+  }
 
   cgol::show_console_cursor(true);
 }
