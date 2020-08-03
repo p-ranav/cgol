@@ -1,5 +1,7 @@
+#include <cgol/cursor_control.hpp>
 #include <cgol/cursor_movement.hpp>
 #include <cgol/grid.hpp>
+#include <cgol/rle_parser.hpp>
 #include <chrono>
 #include <random>
 #include <string>
@@ -19,6 +21,20 @@ template <size_t R, size_t C> void fill_grid_random(cgol::grid<R, C> &grid) {
 }
 
 int main() {
+    cgol::show_console_cursor(false);
+
+    std::string rle_string = R"(
+#N Gosper glider gun (glider destruction)
+#O Dean Hickerson
+#C Complete destruction of Gosper glider gun with two gliders
+#C Glider destruction of the Gosper glider gun.
+#C http://www.conwaylife.com/wiki/Gosper_glider_gun
+#C http://www.conwaylife.com/patterns/gosperglidergungliderdestruction.rle
+x = 47, y = 26, rule = B3/S23
+bo$2bo$3o6$15bo$15b4o$16b4o10b2o$5b2o9bo2bo9bobo$5b2o9b4o8b3o8b2o$15b
+4o8b3o9b2o$15bo12b3o$29bobo$30b2o7$45b2o$44b2o$46bo!
+    )";
+    cgol::rle_parser parser(rle_string);
 
   //   // Stable
   //   {
@@ -100,16 +116,18 @@ int main() {
   //       }
   //   }
 
-  // Random Grid
-  {
-    cgol::grid<50, 100> grid;
-    fill_grid_random(grid);
+//   // Random Grid
+//   {
+//     cgol::grid<50, 100> grid;
+//     fill_grid_random(grid);
 
-    while (true) {
-      grid.print();
-      std::this_thread::sleep_for(std::chrono::milliseconds(10));
-      move_up(grid.rows);
-      grid.tick();
-    }
-  }
+//     while (true) {
+//       grid.print();
+//       std::this_thread::sleep_for(std::chrono::milliseconds(10));
+//       move_up(grid.rows);
+//       grid.tick();
+//     }
+//   }
+
+  cgol::show_console_cursor(true);
 }

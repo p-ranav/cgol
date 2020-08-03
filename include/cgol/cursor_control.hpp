@@ -11,7 +11,7 @@
 #include <cstdio>
 #endif
 
-namespace indicators {
+namespace cgol {
 
 #if defined(_MSC_VER)
 
