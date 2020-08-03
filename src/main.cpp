@@ -5,6 +5,8 @@
 #include <chrono>
 #include <random>
 #include <string>
+#include <fstream>
+#include <streambuf>
 #include <thread>
 using namespace cgol;
 
@@ -20,20 +22,24 @@ template <size_t R, size_t C> void fill_grid_random(cgol::grid<R, C> &grid) {
   }
 }
 
-int main() {
+std::string read_file(const std::string & filename) {
+  std::ifstream stream(filename);
+  if (stream.fail()) {
+    throw std::runtime_error("Error: Could not open file " + filename);
+  }
+  return std::string((std::istreambuf_iterator<char>(stream)),
+                 std::istreambuf_iterator<char>());
+}
+
+int main(int argc, char * argv[]) {
     cgol::show_console_cursor(false);
 
-    std::string rle_string = R"(
-#N Gosper glider gun (glider destruction)
-#O Dean Hickerson
-#C Complete destruction of Gosper glider gun with two gliders
-#C Glider destruction of the Gosper glider gun.
-#C http://www.conwaylife.com/wiki/Gosper_glider_gun
-#C http://www.conwaylife.com/patterns/gosperglidergungliderdestruction.rle
-x = 47, y = 26, rule = B3/S23
-bo$2bo$3o6$15bo$15b4o$16b4o10b2o$5b2o9bo2bo9bobo$5b2o9b4o8b3o8b2o$15b
-4o8b3o9b2o$15bo12b3o$29bobo$30b2o7$45b2o$44b2o$46bo!
-    )";
+    if (argc < 2) {
+      std::cout << "Usage: ./main <pattern>.rle\n";
+      return EXIT_FAILURE;
+    }
+
+    const auto rle_string = read_file(argv[1]);
     cgol::rle_parser parser(rle_string);
 
   //   // Stable

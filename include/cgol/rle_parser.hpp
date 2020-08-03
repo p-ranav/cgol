@@ -119,10 +119,8 @@ class rle_parser {
   void populate_attributes() {
     const auto lines = split_string(rle_string_, "\n");
     for (const auto &line : lines) {
-      const std::string name_string = "#N";
-
       // Name of the pattern
-      if (starts_with(line, name_string)) {
+      if (starts_with(line, "#N")) {
         name_ = strip_left(line, "#N ");
       }
       // Comments accompanying the pattern
@@ -168,12 +166,14 @@ class rle_parser {
             }
           }
         }
-      } else {
-        pattern_raw_ += strip_left(line, " \n\r\t");
+      }
+      // Pattern line 
+      else {
+        pattern_raw_ += strip_right(line, " \n\r\t");
       }
     }
   }
-
+ 
   void populate_pattern() {
     std::cout << size_x_ << " x " << size_y_ << "\n";
     auto pattern_rows = split_string(strip_right(pattern_raw_, "!"), "$");
