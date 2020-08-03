@@ -9,6 +9,7 @@
 #include <streambuf>
 #include <string>
 #include <vector>
+#include <utility>
 
 namespace cgol {
 
@@ -226,10 +227,10 @@ class rle_parser {
 public:
   rle_parser() {}
 
-  void open(const std::string &rle_string, size_t rows = 0, size_t cols = 0) {
+  void open(const std::string &rle_string, std::pair<size_t, size_t> grid_size = {0, 0}) {
     rle_string_ = read_file(rle_string);
-    size_y_ = rows;
-    size_x_ = cols;
+    size_y_ = grid_size.first;
+    size_x_ = grid_size.first;
     populate_attributes();
     populate_pattern();
   }
