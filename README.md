@@ -46,6 +46,12 @@ cmake .. && make
   <img src="img/oscillator_synthesis.gif"/> 
 </p>
 
+### Stargate
+
+<p>
+  <img src="img/stargate.gif"/> 
+</p>
+
 ### Queen Bee
 
 <p>
