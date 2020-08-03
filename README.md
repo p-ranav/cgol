@@ -14,8 +14,16 @@
 ```bash
 git clone git@github.com:p-ranav/cgol
 cd cgol
-cmake ..
-make
+mkdir build && cd build
+cmake .. && make
+```
+
+### Usage
+
+```bash
+./cgol <pattern.rle>
+
+# example: ./cgol ../samples/glider.rle
 ```
 
 ## Samples
