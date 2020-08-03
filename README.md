@@ -9,6 +9,8 @@
 * Uses the terminal width/height as the grid size
 * MIT License
 
+## Quick Start
+
 ```bash
 git clone git@github.com:p-ranav/cgol
 cd cgol
@@ -16,6 +18,10 @@ cmake ..
 make
 ```
 
-<p align="center">
+## Samples
+
+### Queen Bee
+
+<p>
   <img src="img/queen_bee.gif"/> 
 </p>
