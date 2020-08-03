@@ -52,6 +52,12 @@ cmake .. && make
   <img src="img/spaceships.gif"/> 
 </p>
 
+### All known c/3 spaceships up to 50 bits
+
+<p>
+  <img src="img/c3_orthogonal.gif"/> 
+</p>
+
 ### Stargate
 
 <p>
