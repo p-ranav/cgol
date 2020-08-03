@@ -64,7 +64,7 @@ public:
       for (size_t j = 0; j < cols_; j++) {
         const auto cell = grid_[i][j];
         if (cell == 1) {
-          std::cout << "⬜"; // ██";
+          std::cout << "██";
         } else {
           std::cout << "  ";
         }
