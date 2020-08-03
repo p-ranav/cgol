@@ -63,3 +63,9 @@ cmake .. && make
 <p>
   <img src="img/queen_bee.gif"/> 
 </p>
+
+### Fermat Prime Calculator
+
+<p>
+  <img src="img/fermat.gif"/> 
+</p>
