@@ -28,12 +28,6 @@ cmake .. && make
 
 ## Samples
 
-### Glider
-
-<p>
-  <img src="img/glider.gif"/> 
-</p>
-
 ### Gosper Glider Gun
 
 <p>
