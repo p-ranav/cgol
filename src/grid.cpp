@@ -1,7 +1,7 @@
 #include <cgol/grid.hpp>
 using namespace cgol;
 
-grid::grid(const std::string &rle_filename, std::pair<size_t, size_t> grid_size)
+grid::grid(const std::string &rle_filename, const std::pair<size_t, size_t>& grid_size)
     : rows_{grid_size.first}, cols_{grid_size.second}, parser_{} {
   parser_.open(rle_filename, {rows_, cols_});
   rows_ = parser_.rows();
@@ -40,48 +40,14 @@ void grid::print(std::ostream &os) const {
   os << termcolor::reset;
 }
 
-void grid::tick_with_wrap_around() {
-  auto result = grid_;
-
-  for (int i = 0; i < rows_; i++) {
-    for (int j = 0; j < cols_; j++) {
-      result[i][j] = grid_[i][j];
-      const auto neighbours =
-          (grid_[i][(j - 1) % cols_] + grid_[i][(j + 1) % cols_] +
-           grid_[(i - 1) % rows_][j] + grid_[(i + 1) % rows_][j] +
-           grid_[(i - 1) % rows_][(j - 1) % cols_] +
-           grid_[(i - 1) % rows_][(j + 1) % cols_] +
-           grid_[(i + 1) % rows_][(j - 1) % cols_] +
-           grid_[(i + 1) % rows_][(j + 1) % cols_]);
-      if (grid_[i][j] == 1) {
-        // Cell is alive
-        if (neighbours < 2 or neighbours > 3) {
-          // Any live cell with fewer than two live neighbours dies, as if by
-          // underpopulation. Any live cell with more than three live
-          // neighbours dies, as if by overpopulation.
-          result[i][j] = 0;
-        } else {
-          // Any live cell with two or three live neighbours lives on to the
-          // next generation.
-        }
-      } else {
-        // Cell is dead
-        if (neighbours == 3) {
-          // Any dead cell with exactly three live neighbours becomes a live
-          // cell, as if by reproduction.
-          result[i][j] = 1;
-        }
-      }
-    }
-  }
-  grid_ = result;
-}
-
 void grid::tick() {
   auto result = grid_;
 
-  for (int i = 0; i < rows_; i++) {
-    for (int j = 0; j < cols_; j++) {
+  const int rows = static_cast<int>(rows_);
+  const int cols = static_cast<int>(cols_);
+
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
       size_t neighbours = 0;
 
       if (j - 1 >= 0) {
@@ -89,17 +55,17 @@ void grid::tick() {
         if (i - 1 >= 0) {
           neighbours += grid_[i - 1][j - 1];
         }
-        if (i + 1 < rows_) {
+        if (i + 1 < rows) {
           neighbours += grid_[i + 1][j - 1];
         }
       }
 
-      if (j + 1 < cols_) {
+      if (j + 1 < cols) {
         neighbours += grid_[i][j + 1];
         if ((i - 1) >= 0) {
           neighbours += grid_[i - 1][j + 1];
         }
-        if ((i + 1) < rows_) {
+        if ((i + 1) < rows) {
           neighbours += grid_[i + 1][j + 1];
         }
       }
@@ -108,7 +74,7 @@ void grid::tick() {
         neighbours += grid_[i - 1][j];
       }
 
-      if (i + 1 < rows_) {
+      if (i + 1 < rows) {
         neighbours += grid_[i + 1][j];
       }
 

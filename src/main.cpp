@@ -4,6 +4,7 @@
 #include <cgol/rle_parser.hpp>
 #include <cgol/terminal_size.hpp>
 #include <chrono>
+#include <thread>
 using namespace cgol;
 
 int main(int argc, char *argv[]) {

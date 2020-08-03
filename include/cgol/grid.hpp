@@ -14,15 +14,13 @@ class grid {
   rle_parser parser_;
 
 public:
-  explicit grid(const std::string & rle_filename, std::pair<size_t, size_t> grid_size);
+  explicit grid(const std::string & rle_filename, const std::pair<size_t, size_t>& grid_size);
 
   size_t rows() const;
 
   size_t cols() const;
 
   void print(std::ostream& stream = std::cout) const;
-
-  void tick_with_wrap_around();
 
   void tick();
 };
