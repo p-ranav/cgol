@@ -46,6 +46,12 @@ cmake .. && make
   <img src="img/oscillator_synthesis.gif"/> 
 </p>
 
+### Spaceships
+
+<p>
+  <img src="img/spaceships.gif"/> 
+</p>
+
 ### Stargate
 
 <p>
