@@ -2,6 +2,7 @@
 #include <cgol/cursor_movement.hpp>
 #include <cgol/grid.hpp>
 #include <cgol/rle_parser.hpp>
+#include <cgol/terminal_size.hpp>
 #include <chrono>
 #include <random>
 #include <thread>
@@ -19,11 +20,9 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  size_t rows = 0, cols = 0;
-  if (argc > 3) {
-      rows = std::stoi(argv[2]);
-      cols = std::stoi(argv[3]);
-  }
+  const auto terminal_size = cgol::terminal_size();
+
+  size_t rows = terminal_size.first - 2, cols = (terminal_size.second) / 2;
 
   cgol::grid grid(argv[1], rows, cols);
 
