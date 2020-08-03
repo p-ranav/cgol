@@ -1,4 +1,3 @@
-
 #pragma once
 
 #if defined(_MSC_VER)
@@ -14,7 +13,6 @@
 namespace cgol {
 
 #if defined(_MSC_VER)
-
 static inline void show_console_cursor(bool const show) {
   HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -24,13 +22,10 @@ static inline void show_console_cursor(bool const show) {
   cursorInfo.bVisible = show; // set the cursor visibility
   SetConsoleCursorInfo(out, &cursorInfo);
 }
-
 #else
-
 static inline void show_console_cursor(bool const show) {
   std::fputs(show ? "\033[?25h" : "\033[?25l", stdout);
 }
-
 #endif
 
-} // namespace indicators
+} // namespace cgol
