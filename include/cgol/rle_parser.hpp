@@ -1,15 +1,10 @@
 #pragma once
 #include <algorithm>
 #include <cctype>
-#include <cstring>
 #include <fstream>
 #include <iostream>
-#include <locale>
-#include <sstream>
-#include <streambuf>
-#include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 namespace cgol {
 
@@ -128,7 +123,7 @@ class rle_parser {
     return result;
   }
 
-  void populate_attributes() {
+  void parse_attributes() {
     const auto lines = split_string(rle_string_, "\n");
     for (const auto &line : lines) {
       // Name of the pattern
@@ -188,7 +183,7 @@ class rle_parser {
     }
   }
 
-  void populate_pattern() {
+  void parse_pattern() {
     auto pattern_rows = split_string(strip_right(pattern_raw_, "!"), "$");
     for (size_t y = 0; y < pattern_rows.size(); y++) {
       pattern_2d_array.push_back({});
@@ -225,14 +220,13 @@ class rle_parser {
   }
 
 public:
-  rle_parser() {}
-
-  void open(const std::string &rle_string, std::pair<size_t, size_t> grid_size = {0, 0}) {
+  void open(const std::string &rle_string,
+            std::pair<size_t, size_t> grid_size_override = {0, 0}) {
     rle_string_ = read_file(rle_string);
-    size_y_ = grid_size.first;
-    size_x_ = grid_size.first;
-    populate_attributes();
-    populate_pattern();
+    size_y_ = grid_size_override.first;
+    size_x_ = grid_size_override.first;
+    parse_attributes();
+    parse_pattern();
   }
 
   void print() const {
