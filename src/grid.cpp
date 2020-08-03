@@ -1,26 +1,8 @@
 #include <cgol/grid.hpp>
 using namespace cgol;
 
-grid::grid(const std::string &rle_filename) : rows_{0}, cols_{0}, parser_{} {
-  parser_.open(rle_filename);
-  rows_ = parser_.rows();
-  cols_ = parser_.cols();
-  const auto pattern = parser_.pattern();
-
-  for (size_t i = 0; i < rows_; i++) {
-    grid_.push_back({});
-    for (size_t j = 0; j < cols_; j++) {
-      if (pattern[i][j] == 'o') {
-        grid_[i].push_back(1);
-      } else if (pattern[i][j] == 'b') {
-        grid_[i].push_back(0);
-      }
-    }
-  }
-}
-
-grid::grid(const std::string &rle_filename, size_t rows, size_t cols)
-    : rows_{rows}, cols_{cols}, parser_{} {
+grid::grid(const std::string &rle_filename, std::pair<size_t, size_t> grid_size)
+    : rows_{grid_size.first}, cols_{grid_size.second}, parser_{} {
   parser_.open(rle_filename, {rows_, cols_});
   rows_ = parser_.rows();
   cols_ = parser_.cols();

@@ -3,6 +3,7 @@
 #include <cgol/termcolor.hpp>
 #include <string>
 #include <vector>
+#include <utility>
 
 namespace cgol {
 
@@ -13,9 +14,7 @@ class grid {
   rle_parser parser_;
 
 public:
-  explicit grid(const std::string & rle_filename);
-
-  explicit grid(const std::string & rle_filename, size_t rows, size_t cols);
+  explicit grid(const std::string & rle_filename, std::pair<size_t, size_t> grid_size);
 
   size_t rows() const;
 

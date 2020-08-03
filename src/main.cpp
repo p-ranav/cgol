@@ -4,15 +4,10 @@
 #include <cgol/rle_parser.hpp>
 #include <cgol/terminal_size.hpp>
 #include <chrono>
-#include <random>
-#include <thread>
 using namespace cgol;
 
-std::random_device rd;  // obtain a random number from hardware
-std::mt19937 gen(rd()); // seed the generator
-std::uniform_int_distribution<> distr(0, 1); // define the range
-
 int main(int argc, char *argv[]) {
+  // Hide console cursor
   cgol::show_console_cursor(false);
 
   if (argc < 2) {
@@ -20,11 +15,12 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
+  // Get terminal size and use as bounding box for game of life grid
   const auto terminal_size = cgol::terminal_size();
-
   size_t rows = terminal_size.first - 2, cols = (terminal_size.second) / 2;
 
-  cgol::grid grid(argv[1], rows, cols);
+  // Initiali grid with dimensions {rows, cols}
+  cgol::grid grid(argv[1], {rows, cols});
 
   while (true) {
     grid.print();
