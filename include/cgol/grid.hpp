@@ -59,7 +59,7 @@ public:
   }
 
   void print() const {
-    std::cout << termcolor::bold << termcolor::white;
+    std::cout << termcolor::bold;
     for (size_t i = 0; i < rows_; i++) {
       for (size_t j = 0; j < cols_; j++) {
         const auto cell = grid_[i][j];
