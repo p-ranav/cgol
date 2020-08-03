@@ -22,8 +22,6 @@ grid::grid(const std::string &rle_filename, const std::pair<size_t, size_t>& gri
 
 size_t grid::rows() const { return rows_; }
 
-size_t grid::cols() const { return cols_; }
-
 void grid::print(std::ostream &os) const {
   os << termcolor::bold;
   for (size_t i = 0; i < rows_; i++) {
