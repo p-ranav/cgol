@@ -1,7 +1,7 @@
 #include <cgol/grid.hpp>
 using namespace cgol;
 
-grid::grid(const std::string &rle_filename, const std::pair<size_t, size_t>& grid_size)
+grid::grid(const std::string &rle_filename, const std::pair<size_t, size_t> &grid_size)
     : rows_{grid_size.first}, cols_{grid_size.second}, parser_{} {
   parser_.open(rle_filename, {rows_, cols_});
   rows_ = parser_.rows();

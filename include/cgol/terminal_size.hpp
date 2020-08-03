@@ -37,4 +37,3 @@ static inline size_t terminal_width() { return terminal_size().second; }
 } // namespace cgol
 
 #endif
-

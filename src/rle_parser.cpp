@@ -97,8 +97,7 @@ void rle_parser::parse_pattern() {
   }
 }
 
-void rle_parser::open(const std::string &rle_string,
-                      std::pair<size_t, size_t> grid_size_override) {
+void rle_parser::open(const std::string &rle_string, std::pair<size_t, size_t> grid_size_override) {
   rle_string_ = read_file(rle_string);
   size_y_ = grid_size_override.first;
   size_x_ = grid_size_override.second;
@@ -119,6 +118,4 @@ size_t rle_parser::rows() const { return size_y_; }
 
 size_t rle_parser::cols() const { return size_x_; }
 
-std::vector<std::vector<unsigned char>> rle_parser::pattern() const {
-  return pattern_2d_array;
-}
+std::vector<std::vector<unsigned char>> rle_parser::pattern() const { return pattern_2d_array; }

@@ -15,8 +15,7 @@ class rle_parser {
   std::vector<size_t> rule_birth_;    // e.g., 3 in "B3"
   std::vector<size_t> rule_survival_; // e.g., 23 in "S23"
   std::string pattern_raw_;           // Raw pattern, e.g., "25boo85boo$24bo..."
-  std::vector<std::vector<unsigned char>>
-      pattern_2d_array; // 2D vector repr. of the pattern_raw_
+  std::vector<std::vector<unsigned char>> pattern_2d_array; // 2D vector repr. of the pattern_raw_
 
   // Parses attributes like name, author, comments, pattern size etc.
   void parse_attributes();
@@ -34,8 +33,7 @@ public:
   // e.g., if the RLE file has a grid size of 38x11 and the override is 40x15,
   // then 40x15 will be used as the grid size - additional `b` dead cells will
   // be inserted where needed.
-  void open(const std::string &rle_string,
-            std::pair<size_t, size_t> grid_size_override = {0, 0});
+  void open(const std::string &rle_string, std::pair<size_t, size_t> grid_size_override = {0, 0});
 
   // Returns the number of rows in the pattern
   // This value is either:
