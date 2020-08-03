@@ -32,6 +32,12 @@ make
   <img src="img/gosper_glider_gun.gif"/> 
 </p>
 
+### Oscillator Synthesis
+
+<p>
+  <img src="img/oscillator_synthesis.gif"/> 
+</p>
+
 ### Queen Bee
 
 <p>
