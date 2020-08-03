@@ -18,7 +18,6 @@ public:
     parser_.open(rle_filename);
     rows_ = parser_.rows();
     cols_ = parser_.cols();
-
     const auto pattern = parser_.pattern();
 
     for (size_t i = 0; i < rows_; i++) {
@@ -35,7 +34,8 @@ public:
 
   explicit grid(const std::string & rle_filename, size_t rows, size_t cols) : rows_{rows}, cols_{cols}, parser_{} {
     parser_.open(rle_filename, rows_, cols_);
-
+    rows_ = parser_.rows();
+    cols_ = parser_.cols();
     const auto pattern = parser_.pattern();
 
     for (size_t i = 0; i < rows_; i++) {

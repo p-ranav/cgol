@@ -17,8 +17,8 @@ class rle_parser {
   std::string name_;
   std::vector<std::string> comments_;
   std::string author_;
-  size_t size_x_;
-  size_t size_y_;
+  size_t size_x_{0};
+  size_t size_y_{0};
   std::vector<size_t> rule_birth_;
   std::vector<size_t> rule_survival_;
   std::string pattern_raw_;

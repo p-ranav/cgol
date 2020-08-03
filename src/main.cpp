@@ -27,6 +27,8 @@ int main(int argc, char * argv[]) {
       return EXIT_FAILURE;
     }
 
+
+
   //   // Stable
   //   {
   //     cgol::grid<4, 4> grid;
