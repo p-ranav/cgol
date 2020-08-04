@@ -27,7 +27,7 @@ cmake .. && make
 
 ## Samples
 
-### Gosper Glider Gun
+### Gosper's Glider Gun
 
 <p>
   <img src="img/gosper_glider_gun.gif"/> 
