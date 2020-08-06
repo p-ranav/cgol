@@ -10,6 +10,7 @@ using namespace cgol;
 
 int main(int argc, char *argv[]) {
   std::signal(SIGINT, [](int){ cgol::show_console_cursor(true); std::exit(0); });
+
   // Hide console cursor
   cgol::show_console_cursor(false);
 
@@ -22,7 +23,7 @@ int main(int argc, char *argv[]) {
   const auto terminal_size = cgol::terminal_size();
   size_t rows = terminal_size.first - 2, cols = (terminal_size.second) / 2;
 
-  // Initiali grid with dimensions {rows, cols}
+  // Initialize grid with dimensions {rows, cols}
   cgol::grid grid(argv[1], {rows, cols});
 
   while (true) {
