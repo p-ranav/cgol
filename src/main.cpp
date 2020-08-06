@@ -5,9 +5,11 @@
 #include <cgol/terminal_size.hpp>
 #include <chrono>
 #include <thread>
+#include <csignal>
 using namespace cgol;
 
 int main(int argc, char *argv[]) {
+  std::signal(SIGINT, [](int){ cgol::show_console_cursor(true); std::exit(0); });
   // Hide console cursor
   cgol::show_console_cursor(false);
 
@@ -31,4 +33,5 @@ int main(int argc, char *argv[]) {
   }
 
   cgol::show_console_cursor(true);
+  return 0;
 }
