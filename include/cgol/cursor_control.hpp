@@ -27,4 +27,9 @@ static inline void show_console_cursor(bool const show) {
 }
 #endif
 
+struct cursor_hider {
+    cursor_hider()  { show_console_cursor(false); }
+    ~cursor_hider() { show_console_cursor(true); }
+};
+
 } // namespace cgol
