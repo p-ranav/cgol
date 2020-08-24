@@ -9,10 +9,11 @@
 using namespace cgol;
 
 int main(int argc, char *argv[]) {
-  std::signal(SIGINT, [](int){ cgol::show_console_cursor(true); std::exit(0); });
+  static bool run = true;
+  std::signal(SIGINT, [](int){ run = false; });
 
   // Hide console cursor
-  cgol::show_console_cursor(false);
+  cgol::cursor_hider ch;
 
   if (argc < 2) {
     std::cout << "Usage: ./main <pattern>.rle\n";
@@ -26,13 +27,12 @@ int main(int argc, char *argv[]) {
   // Initialize grid with dimensions {rows, cols}
   cgol::grid grid(argv[1], {rows, cols});
 
-  while (true) {
+  while (run) {
     grid.print();
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
     move_up(grid.rows());
     grid.tick();
   }
 
-  cgol::show_console_cursor(true);
-  return 0;
+  return EXIT_SUCCESS;
 }
